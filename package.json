@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "express": "^5.2.1",
-    "node": "^26.5.0"
+    "node": "^26.5.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
