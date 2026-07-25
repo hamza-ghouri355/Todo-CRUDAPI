@@ -19,21 +19,34 @@ app.get('/tasks',(req,res)=>{
 
 app.get('/tasks/:id',(req,res)=>
 {
-    try
+    const task=tasks.find(t=>t.id==parseInt(req.params.id));
+    if(!task)
     {
-        const id=parseInt(req.params.id);
-        const task=tasks.find(t=>t.id===id);
-        if(!task)
-        {
-            return res.status(404).json({error:'Task not found'});
-        }
-        res.json(task);
+        return res.status(404).json({error:'Task not found'});
     }
-    catch(error)
-    {
-        res.status(500).json({error:'Internal server error'});
-    }
+    res.json(task);
 });
+
+app.post('/tasks',(req,res)=>{
+    const{title}=req.body;
+    if(!title)
+    {
+        return res.status(400).json({error:'Title is required'});
+    }
+
+    const NewID= tasks.length>0?tasks[tasks.length-1].id+1:1;
+
+    const newTask={
+        id:NewID,
+        title:title,
+        completed:false
+    }
+    tasks.push(newTask);
+    res.status(201).json(newTask);
+});
+
+
+
 
 app.get('/',(req,res)=> {
     res.json({
