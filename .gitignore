@@ -1,3 +1,7 @@
 node_modules
+<<<<<<< HEAD
 .env
 task.db
+=======
+tasks.db
+>>>>>>> cb4ae2f776f9fcbd62f03091b8c5048e1d8b0c25
