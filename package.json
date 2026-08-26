@@ -1,20 +1,13 @@
 {
   "dependencies": {
-<<<<<<< HEAD
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "pg": "^8.23.0",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^6.0.1"
-=======
-    "express": "^5.2.1",
-    "node": "^26.5.0",
     "sqlite": "^5.1.1",
     "sqlite3": "^6.0.1",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
->>>>>>> cb4ae2f776f9fcbd62f03091b8c5048e1d8b0c25
   }
 }
