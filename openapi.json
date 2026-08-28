@@ -3,15 +3,22 @@
   "info": {
     "title": "Task API",
     "version": "1.0.0",
-    "description": "A simple CRUD API for managing a to-do list"
+    "description": "A CRUD API with Postgres storage and Supabase authentication"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
   },
   "paths": {
     "/tasks": {
       "get": {
         "summary": "Get all tasks",
-        "responses": {
-          "200": { "description": "List of tasks" }
-        }
+        "responses": { "200": { "description": "List of tasks" } }
       },
       "post": {
         "summary": "Create a new task",
@@ -22,7 +29,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": { "type": "string" }
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "status": { "type": "string", "enum": ["Pending", "In Progress", "Completed"] }
                 },
                 "required": ["title"]
               }
@@ -59,7 +68,8 @@
                 "type": "object",
                 "properties": {
                   "title": { "type": "string" },
-                  "completed": { "type": "boolean" }
+                  "description": { "type": "string" },
+                  "status": { "type": "string", "enum": ["Pending", "In Progress", "Completed"] }
                 }
               }
             }
@@ -79,6 +89,81 @@
         "responses": {
           "204": { "description": "Task deleted" },
           "404": { "description": "Task not found" }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "summary": "Create a new account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Account created" },
+          "400": { "description": "Missing email or password" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Log in and receive a JWT",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login successful, returns access token" },
+          "400": { "description": "Missing email or password" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Log out",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "204": { "description": "Logged out" },
+          "401": { "description": "Missing or invalid token" }
+        }
+      }
+    },
+    "/public/info": {
+      "get": {
+        "summary": "Public info, no auth required",
+        "responses": { "200": { "description": "Public message" } }
+      }
+    },
+    "/protected/profile": {
+      "get": {
+        "summary": "Get the logged-in user's profile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "User profile" },
+          "401": { "description": "Missing or invalid token" }
         }
       }
     }
