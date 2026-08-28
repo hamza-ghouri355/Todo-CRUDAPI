@@ -7,9 +7,15 @@ const port = 3000;
 const tasksData = require('./data/task.data');
 const tasksRoutes = require('./routes/tasks.routes');
 const authRoutes=require('./routes/auth.routes');
+const protectedRoutes=require('./routes/protected.routes');
+
 
 app.use(express.json());
 app.use('/auth', authRoutes);
+app.get('/public/info', (req, res) => {
+  res.json({ message: 'Welcome stranger! This info is public.' });
+});
+app.use('/protected', protectedRoutes);
 app.use('/docs', swaggerui.serve, swaggerui.setup(openapiSpec));
 
 
