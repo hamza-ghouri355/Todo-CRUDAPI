@@ -19,7 +19,7 @@ async function login(req,res){
     }
     const {data,error}=await supabase.auth.signInWithPassword({email,password});
     if(error){
-        return res.status(400).json({error:error.message});
+        return res.status(401).json({error:error.message});
     }
 
     res.status(200).json({
@@ -28,4 +28,12 @@ async function login(req,res){
     });
 }
 
-module.exports={signup,login};
+async function logout(req, res) {
+  const { error } = await supabase.auth.signOut(req.access_token);
+  if (error) {
+    return res.status(400).json({ error: error.message });
+  }
+  return res.status(204).send();
+}
+
+module.exports={signup,login,logout};
