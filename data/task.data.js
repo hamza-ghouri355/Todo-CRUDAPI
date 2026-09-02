@@ -20,8 +20,6 @@ async function initDB() {
     }
 }
 
-
-
 async function getall(){
     const task = await pool.query('select * from tasks');
     return task.rows;

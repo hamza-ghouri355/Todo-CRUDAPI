@@ -1,8 +1,6 @@
 const fs = require('fs/promises');
 
 async function main(){
-    const abortcontoller=new AbortController();
-    const timeout= setTimeout(()=>{abortcontoller.abort()},5000);
     const cachedpath='cache/catalogue-page-1.html';
     try{
         const html = await fs.readFile(cachedpath,'utf-8');
@@ -10,6 +8,8 @@ async function main(){
         return;
     }
     catch{
+        const abortcontoller=new AbortController();
+        const timeout= setTimeout(()=>{abortcontoller.abort()},5000);
       const response = await fetch('https://books.toscrape.com/catalogue/page-1.html', {
         headers: {
           'User-Agent': 'FlyRankInternshipA9/1.0 (+https://github.com/hamza-ghouri355/Todo-CRUDAPI)'
